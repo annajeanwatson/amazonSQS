@@ -33,7 +33,10 @@ def retrieve_sqs_messages(sqs_queue_url, num_msgs=1, wait_time=0, visibility_tim
         return None
 
     # Return the list of retrieved messages
-    return msgs['Messages']
+    if msgs != None:
+        return msgs['Messages']
+    else:
+        return None
 
 
 def delete_sqs_message(sqs_queue_url, msg_receipt_handle):
@@ -55,15 +58,12 @@ def main():
     sqs_queue_url = 'https://sqs.us-east-2.amazonaws.com/630265412085/ec21.fifo'
     num_messages = 2
 
-    # Set up logging
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(levelname)s: %(asctime)s: %(message)s')
-
     # Retrieve SQS messages
     msgs = retrieve_sqs_messages(sqs_queue_url, num_messages)
     if msgs is not None:
         for msg in msgs:
             print(msg)
+            print(msg["Body"])
 
             # Remove the message from the queue
             delete_sqs_message(sqs_queue_url, msg['ReceiptHandle'])

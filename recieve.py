@@ -63,8 +63,7 @@ def main():
     msgs = retrieve_sqs_messages(sqs_queue_url, num_messages)
     if msgs is not None:
         for msg in msgs:
-            logging.info(f'SQS: Message ID: {msg["MessageId"]}, '
-                         f'Contents: {msg["Body"]}')
+            print(msg)
 
             # Remove the message from the queue
             delete_sqs_message(sqs_queue_url, msg['ReceiptHandle'])
